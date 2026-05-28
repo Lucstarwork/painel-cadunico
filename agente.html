@@ -137,25 +137,27 @@
       --muted2: #5C6E84;
       --radius: 12px;
       --shadow-card: 0 2px 10px rgba(7, 29, 65, .09), 0 0 0 1px rgba(7, 29, 65, .05);
+      --red-bg-pulse: rgba(229, 34, 7, 0.25);
     }
 
     [data-theme="dark"] {
-      --bg: #1B2B3E;
-      --surface: #223347;
-      --border: #334E6A;
-      --border2: #2C4460;
-      --txt: #E8F1FA;
-      --muted: #90AECA;
-      --muted2: #9BBAD2;
-      --blue-bg: #1A3558;
-      --blue-light: #274E7D;
-      --green-bg: #163624;
-      --green-border: #2B5C3B;
-      --yellow-bg: #352C06;
-      --yellow-border: #6B5200;
-      --red-bg: #381414;
-      --red-border: #742121;
-      --shadow-card: 0 2px 12px rgba(0, 0, 0, .28), 0 0 0 1px rgba(0, 0, 0, .18);
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --border: #334155;
+      --border2: #293548;
+      --txt: #E2E8F0;
+      --muted: #94A3B8;
+      --muted2: #94A3B8;
+      --blue-bg: rgba(59, 130, 246, 0.15);
+      --blue-light: rgba(59, 130, 246, 0.3);
+      --green-bg: rgba(34, 197, 94, 0.15);
+      --green-border: rgba(34, 197, 94, 0.3);
+      --yellow-bg: rgba(234, 179, 8, 0.15);
+      --yellow-border: rgba(234, 179, 8, 0.3);
+      --red-bg: rgba(239, 68, 68, 0.15);
+      --red-border: rgba(239, 68, 68, 0.3);
+      --red-bg-pulse: rgba(239, 68, 68, 0.28);
+      --shadow-card: 0 1px 3px rgba(0, 0, 0, .35), 0 0 0 1px #334155;
     }
 
     [data-theme="dark"] .ipm-box {
@@ -173,6 +175,70 @@
 
     [data-theme="dark"] .coord-modal {
       background: var(--bg)
+    }
+
+    /* Semantic Colors — Soft Backgrounds: text overrides */
+    [data-theme="dark"] .fleg-livre,
+    [data-theme="dark"] .ficha-livre .fc-num,
+    [data-theme="dark"] .ficha-livre .fc-lbl,
+    [data-theme="dark"] .tipo-badge.atualizacao,
+    [data-theme="dark"] .cr-senha,
+    [data-theme="dark"] .call-row.mine .cr-senha,
+    [data-theme="dark"] .btn-dash:hover:not(:disabled) {
+      color: #93C5FD;
+    }
+
+    [data-theme="dark"] .fleg-atendendo,
+    [data-theme="dark"] .ficha-atendendo .fc-num,
+    [data-theme="dark"] .ficha-atendendo .fc-lbl,
+    [data-theme="dark"] .bal-status.b-disponivel .bs-num,
+    [data-theme="dark"] .bal-status.b-disponivel .bs-label,
+    [data-theme="dark"] .tipo-badge.inclusao,
+    [data-theme="dark"] .btn-concluir {
+      color: #86EFAC;
+    }
+
+    [data-theme="dark"] .fleg-aguardando,
+    [data-theme="dark"] .ficha-aguardando .fc-num,
+    [data-theme="dark"] .ficha-aguardando .fc-lbl,
+    [data-theme="dark"] .btn-recall,
+    [data-theme="dark"] .obs-interna-box,
+    [data-theme="dark"] .cr-rec {
+      color: #FDE047;
+    }
+
+    [data-theme="dark"] .fleg-morta,
+    [data-theme="dark"] .ficha-morta .fc-num,
+    [data-theme="dark"] .ficha-morta .fc-lbl,
+    [data-theme="dark"] .bal-status.b-atendendo .bs-num,
+    [data-theme="dark"] .bal-status.b-atendendo .bs-label,
+    [data-theme="dark"] .btn-ausente {
+      color: #FCA5A5;
+    }
+
+    [data-theme="dark"] .bal-status.b-alerta .bs-num,
+    [data-theme="dark"] .bal-status.b-alerta .bs-label {
+      color: #FCA5A5 !important;
+    }
+
+    /* Badge variants — hardcoded light-mode color overrides */
+    [data-theme="dark"] .acm-badge-inclusao {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86EFAC;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    [data-theme="dark"] .acm-badge-atualizacao {
+      background: rgba(59, 130, 246, 0.15);
+      color: #93C5FD;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    /* Alert elapsed — soft background override */
+    [data-theme="dark"] .cr-elapsed.alerta,
+    [data-theme="dark"] .coord-live-elapsed.alerta {
+      background: rgba(239, 68, 68, 0.15);
+      color: #FCA5A5;
     }
 
     body {
@@ -1596,7 +1662,7 @@
       }
 
       50% {
-        background: rgba(229, 34, 7, .18);
+        background: var(--red-bg-pulse);
         border-color: var(--red)
       }
     }
