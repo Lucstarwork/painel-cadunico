@@ -484,9 +484,9 @@
       width: 100%;
       padding: 1rem 1.25rem;
       border-radius: 8px;
-      border: 2px solid var(--yellow-border);
-      background: var(--yellow-bg);
-      color: #4a3800;
+      border: 2px solid var(--yellow);
+      background: var(--yellow);
+      color: #111827;
       font-family: inherit;
       font-size: 1rem;
       font-weight: 600;
@@ -499,8 +499,19 @@
     }
 
     .btn-recepcao:hover {
-      background: var(--yellow);
-      border-color: var(--yellow)
+      background: #E6B800;
+      border-color: #E6B800;
+    }
+
+    [data-theme="dark"] .btn-recepcao {
+      background: #CA8A04;
+      border-color: #CA8A04;
+      color: #0F172A;
+    }
+
+    [data-theme="dark"] .btn-recepcao:hover {
+      background: #D97706;
+      border-color: #D97706;
     }
 
     #opScreen {
