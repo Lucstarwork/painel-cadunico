@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.claude/
+
+# Dados sensíveis — nunca versionar
+credentials.json
+*.env
+.env*
+
+# Dados de runtime — gerados localmente
+arquivo_morto.csv
+
+# Logs e temporários
+*.log
+npm-debug.log*
