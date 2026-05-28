@@ -136,7 +136,9 @@
       --muted: #636363;
       --muted2: #5C6E84;
       --radius: 12px;
-      --shadow-card: 0 2px 10px rgba(7, 29, 65, .09), 0 0 0 1px rgba(7, 29, 65, .05);
+      --shadow-card: 0 1px 2px rgba(7, 29, 65, .04), 0 4px 16px rgba(7, 29, 65, .10), 0 0 0 1px rgba(7, 29, 65, .06);
+      --shadow-lift: 0 2px 4px rgba(7, 29, 65, .06), 0 8px 24px rgba(7, 29, 65, .13), 0 0 0 1px rgba(7, 29, 65, .07);
+      --transition-base: all .2s cubic-bezier(0.4, 0, 0.2, 1);
       --red-bg-pulse: rgba(229, 34, 7, 0.25);
     }
 
@@ -242,7 +244,9 @@
     }
 
     body {
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: radial-gradient(circle, rgba(7, 29, 65, 0.07) 1px, transparent 1px);
+      background-size: 22px 22px;
       color: var(--txt);
       font-family: 'IBM Plex Sans', sans-serif;
       height: 100vh;
@@ -250,6 +254,10 @@
       display: flex;
       flex-direction: column;
       padding-bottom: 0;
+    }
+
+    [data-theme="dark"] body {
+      background-image: radial-gradient(circle, rgba(148, 163, 184, 0.045) 1px, transparent 1px);
     }
 
     ::-webkit-scrollbar {
@@ -281,7 +289,7 @@
     }
 
     .topbar {
-      background: var(--navy);
+      background: linear-gradient(180deg, #0C2356 0%, var(--navy) 100%);
       padding: 1rem 1.5rem;
       display: flex;
       align-items: center;
@@ -289,6 +297,18 @@
       width: 100%;
       position: relative;
       overflow: hidden;
+    }
+
+    .topbar::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 55%;
+      height: 160%;
+      background: radial-gradient(ellipse at 50% 0%, rgba(38, 112, 232, 0.22) 0%, transparent 68%);
+      pointer-events: none;
     }
 
     .topbar::after {
@@ -365,6 +385,11 @@
       overflow: hidden;
       box-shadow: var(--shadow-card);
       margin: .75rem .75rem;
+      transition: box-shadow .2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] .card {
+      border-top-color: #3D526A;
     }
 
     .card-head {
@@ -410,7 +435,13 @@
     }
 
     .sel-input:focus {
-      border-color: var(--blue)
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(19, 81, 180, .12);
+      outline: none;
+    }
+
+    [data-theme="dark"] .sel-input:focus {
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, .2);
     }
 
     .bal-label {
@@ -440,13 +471,18 @@
       gap: .2rem;
       padding: 1.6rem .5rem;
       cursor: pointer;
-      transition: all .15s;
+      transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .bal-opt:hover {
       border-color: var(--blue);
       background: var(--blue-bg);
-      box-shadow: 0 0 0 3px rgba(19, 81, 180, .12)
+      box-shadow: 0 0 0 3px rgba(19, 81, 180, .12), 0 8px 20px rgba(7, 29, 65, .12);
+      transform: translateY(-2px);
+    }
+
+    [data-theme="dark"] .bal-opt:hover {
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, .2), 0 8px 24px rgba(0, 0, 0, .35);
     }
 
     .bal-opt-compact {
@@ -501,6 +537,8 @@
     .btn-recepcao:hover {
       background: #E6B800;
       border-color: #E6B800;
+      box-shadow: 0 4px 16px rgba(230, 184, 0, .35);
+      transform: translateY(-1px);
     }
 
     [data-theme="dark"] .btn-recepcao {
@@ -512,6 +550,8 @@
     [data-theme="dark"] .btn-recepcao:hover {
       background: #D97706;
       border-color: #D97706;
+      box-shadow: 0 4px 16px rgba(202, 138, 4, .42);
+      transform: translateY(-1px);
     }
 
     #opScreen {
@@ -684,16 +724,20 @@
     }
 
     .btn-next {
-      background: var(--blue);
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%);
+      box-shadow: 0 4px 14px rgba(19, 81, 180, .3);
       color: #fff;
       grid-column: span 2;
       font-size: 1rem;
       padding: 1.1rem;
       border-radius: 8px;
+      transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .btn-next:hover:not(:disabled) {
-      background: var(--blue2)
+      background: linear-gradient(135deg, #1661CC 0%, #3D8BF8 100%);
+      box-shadow: 0 6px 20px rgba(38, 112, 232, .42);
+      transform: translateY(-1px);
     }
 
     .btn-recall {
