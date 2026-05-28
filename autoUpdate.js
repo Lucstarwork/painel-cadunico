@@ -2,7 +2,7 @@
   'use strict';
 
   // Repositório GitHub no formato "utilizador/repositorio"
-  var GITHUB_REPO  = 'OWNER/painel-cadunico';
+  var GITHUB_REPO  = 'Lucstarwork/painel-cadunico';
   var LS_KEY       = 'last_update_check';
   var RELOAD_DELAY = 5000;
 
