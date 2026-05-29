@@ -1,6 +1,6 @@
 {
   "name": "painel-cadunico",
-  "version": "1.0.8",
+  "version": "1.0.7",
   "description": "Sistema de Painel de Atendimento On-Premise",
   "main": "main.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "dependencies": {
     "better-sqlite3": "^12.9.0",
     "dotenv": "^16.4.5",
+    "electron-updater": "^6.8.3",
     "express": "^4.19.2",
     "googleapis": "^171.4.0",
     "socket.io": "^4.7.5"
@@ -27,6 +28,11 @@
     "extraResources": [
       "banco_inicial.db"
     ],
+    "publish": {
+      "provider": "github",
+      "owner": "Lucstarwork",
+      "repo": "painel-cadunico"
+    },
     "win": {
       "target": [
         "nsis",
