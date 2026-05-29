@@ -1,6 +1,6 @@
 {
   "name": "painel-cadunico",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Sistema de Painel de Atendimento On-Premise",
   "main": "main.js",
   "scripts": {
