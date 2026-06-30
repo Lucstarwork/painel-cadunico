@@ -11,6 +11,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel de Atendimento</title>
+  <link rel="icon" type="image/png" href="/favicon.png?v=2">
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     rel="stylesheet">
@@ -780,6 +781,20 @@
       line-height: 1.25;
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
+
+    #version-badge {
+      position: fixed;
+      bottom: .55rem;
+      right: .75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .5rem;
+      font-weight: 400;
+      color: rgba(255,255,255,.18);
+      letter-spacing: .06em;
+      pointer-events: none;
+      z-index: 10;
+      user-select: none;
+    }
   </style>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/autoUpdate.js"></script>
@@ -801,6 +816,7 @@
     <div class="ov-cta">Clique para ativar o som</div>
   </div>
 
+  <div id="version-badge"></div>
   <div id="flashVeil"></div>
 
   <header>
@@ -1536,6 +1552,11 @@
 
 
 
+
+    fetch('/api/version', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(d => { if (d.version) document.getElementById('version-badge').textContent = 'v' + d.version; })
+      .catch(() => {});
 
     document.getElementById('startOverlay').addEventListener('click', function () {
       audioCtx();

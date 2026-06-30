@@ -1,6 +1,6 @@
 {
   "name": "painel-cadunico",
-  "version": "1.0.9",
+  "version": "1.1.8",
   "description": "Sistema de Painel de Atendimento On-Premise",
   "main": "main.js",
   "scripts": {
@@ -26,12 +26,17 @@
       "output": "dist"
     },
     "extraResources": [
-      "banco_inicial.db"
+      "banco_inicial.db",
+      {
+        "from": "build/favicon.png",
+        "to": "favicon.png"
+      }
     ],
     "publish": {
       "provider": "github",
       "owner": "Lucstarwork",
-      "repo": "painel-cadunico"
+      "repo": "painel-cadunico",
+      "releaseType": "release"
     },
     "win": {
       "target": [
