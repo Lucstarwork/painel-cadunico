@@ -11,6 +11,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recepção — Agente</title>
+  <link rel="icon" type="image/png" href="/favicon.png?v=2">
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     rel="stylesheet">
@@ -790,7 +791,8 @@
 
     #ipmModal,
     #encerrarModal,
-    #zerarModal {
+    #zerarModal,
+    #ausenteModal {
       display: none;
       position: fixed;
       inset: 0;
@@ -803,7 +805,8 @@
 
     #ipmModal.open,
     #encerrarModal.open,
-    #zerarModal.open {
+    #zerarModal.open,
+    #ausenteModal.open {
       display: flex
     }
 
@@ -2771,13 +2774,13 @@
           <option>Crislaine de Macedo</option>
           <option>Fabiane Binhara</option>
           <option>Hariton Ribeiro</option>
-          <option>Lucas de Souza</option>
           <option>Marcia Vernick</option>
+          <option>Merelyn de Moura</option>
           <option>Nicole Fuchner</option>
           <option>Patricia Gogola</option>
           <option>Rodrigo Morges</option>
+          <option>Sandra da Fonte</option>
           <option>Sergio de Andrade</option>
-          <option>Merelyn de Moura</option>
           <option>Sergio de Freitas</option>
         </select>
         <div class="bal-label">Selecione a mesa</div>
@@ -3788,11 +3791,12 @@
     }
 
     function recepcaoMarcarAusenteQueueAction(senha) {
-      if (!confirm('Marcar senha ' + senha + ' como Ausente?')) return;
-      apiCall('recepcaoMarcarAusenteQueue', [senha]).then(r => {
-        if (r.ok) { toast('Senha ' + senha + ' marcada como ausente.', 'ok'); pollRecepcaoEstado(); }
-        else { toast(r.erro, 'err'); }
-      }).catch(() => toast('Erro de conexão.', 'err'));
+      abrirModalAusente('Marcar senha ' + senha + ' como Ausente?', () => {
+        apiCall('recepcaoMarcarAusenteQueue', [senha]).then(r => {
+          if (r.ok) { toast('Senha ' + senha + ' marcada como ausente.', 'ok'); pollRecepcaoEstado(); }
+          else { toast(r.erro, 'err'); }
+        }).catch(() => toast('Erro de conexão.', 'err'));
+      });
     }
 
     function abrirFormEncaixe() {
@@ -4017,6 +4021,26 @@
         if (r.ok) { toast('Senha pulada.', 'ok'); pollRecepcaoEstado(); }
         else { toast(r.erro, 'err'); }
       }).catch(() => { btnBusy(btn, false); toast('Erro de conexão.', 'err'); });
+    }
+
+    let _ausentePendente = null;
+
+    function abrirModalAusente(mensagem, callback) {
+      _ausentePendente = callback;
+      document.getElementById('ausenteModalMensagem').textContent = mensagem;
+      document.getElementById('ausenteModal').classList.add('open');
+      document.getElementById('ausenteBtnSim').focus();
+    }
+
+    function fecharModalAusente() {
+      document.getElementById('ausenteModal').classList.remove('open');
+      _ausentePendente = null;
+    }
+
+    function confirmarAusente() {
+      const cb = _ausentePendente;
+      fecharModalAusente();
+      if (cb) cb();
     }
 
     function zerarSenhasDia() {
@@ -5661,6 +5685,7 @@
       if (e.key === 'Escape') {
         if (document.getElementById('ipmModal').classList.contains('open')) fecharModalIPM();
         if (document.getElementById('encerrarModal').classList.contains('open')) fecharModalEncerrar();
+        if (document.getElementById('ausenteModal').classList.contains('open')) fecharModalAusente();
         if (document.getElementById('exportModal').style.display !== 'none') fecharExportacao({ target: document.getElementById('exportModal') });
       }
     });
@@ -5765,45 +5790,45 @@
       const ag = _agendamentosCache.find(a => a.linha === linhaOriginal);
       if (!ag) return;
 
-      if (!confirm('Tem certeza que deseja marcar ' + ag.nome + ' como AUSENTE? Essa ação o removerá da fila de hoje.')) return;
-
       const btn = event.target;
-      const oldText = btn.textContent;
-      btn.textContent = 'Processando...';
-      btn.disabled = true;
+      abrirModalAusente('Tem certeza que deseja marcar ' + ag.nome + ' como AUSENTE? Essa ação o removerá da fila de hoje.', () => {
+        const oldText = btn.textContent;
+        btn.textContent = 'Processando...';
+        btn.disabled = true;
 
-      const agendaJSON = JSON.stringify({
-        tipo: 'AGENDADO',
-        linhas: ag.linhas || [ag.linha],
-        linha: ag.linha,
-        id: ag.id || '',
-        nome: ag.nome,
-        hora: ag.hora,
-        tipoAtendimento: ag.tipoAtendimento || '',
-        beneficio: ag.beneficio || '',
-        unidade: ag.unidade || '',
-        qtdPessoas: ag.qtdPessoas || 1,
-        obsInterna: ag.obsInterna || '',
-        obsJustificativa: ag.obsJustificativa || ''
-      });
+        const agendaJSON = JSON.stringify({
+          tipo: 'AGENDADO',
+          linhas: ag.linhas || [ag.linha],
+          linha: ag.linha,
+          id: ag.id || '',
+          nome: ag.nome,
+          hora: ag.hora,
+          tipoAtendimento: ag.tipoAtendimento || '',
+          beneficio: ag.beneficio || '',
+          unidade: ag.unidade || '',
+          qtdPessoas: ag.qtdPessoas || 1,
+          obsInterna: ag.obsInterna || '',
+          obsJustificativa: ag.obsJustificativa || ''
+        });
 
-      apiCall('recepcaoMarcarAgendamentoAusente', [agendaJSON]).then(r => {
-        if (r.ok) {
-          toast('Agendamento baixado como ausente!', 'ok');
-          _agendamentosCache = _agendamentosCache.filter(a => a.linha !== linhaOriginal);
-          salvarCacheNoNavegador(_agendamentosCache);
-          filtrarListaAgendamentos();
+        apiCall('recepcaoMarcarAgendamentoAusente', [agendaJSON]).then(r => {
+          if (r.ok) {
+            toast('Agendamento baixado como ausente!', 'ok');
+            _agendamentosCache = _agendamentosCache.filter(a => a.linha !== linhaOriginal);
+            salvarCacheNoNavegador(_agendamentosCache);
+            filtrarListaAgendamentos();
 
-          if (typeof filtrarAgendamentos === 'function') filtrarAgendamentos();
-        } else {
-          toast(r.erro || 'Erro ao marcar ausente', 'err');
+            if (typeof filtrarAgendamentos === 'function') filtrarAgendamentos();
+          } else {
+            toast(r.erro || 'Erro ao marcar ausente', 'err');
+            btn.textContent = oldText;
+            btn.disabled = false;
+          }
+        }).catch(err => {
+          toast('Erro de conexão.', 'err');
           btn.textContent = oldText;
           btn.disabled = false;
-        }
-      }).catch(err => {
-        toast('Erro de conexão.', 'err');
-        btn.textContent = oldText;
-        btn.disabled = false;
+        });
       });
     }
 
@@ -5925,6 +5950,20 @@
         <button class="ipm-btn-sim" id="encerrarBtnSim" onclick="confirmarEncerrar()"
           style="background:var(--red)"><span class="material-symbols-rounded">stop_circle</span>
           Sim, encerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="ausenteModal" role="dialog" aria-modal="true" aria-labelledby="ausenteModalTitulo">
+    <div class="ipm-box">
+      <div class="ipm-icon" aria-hidden="true"><span class="material-symbols-rounded">person_off</span></div>
+      <div class="ipm-title" id="ausenteModalTitulo">Marcar como Ausente?</div>
+      <div class="ipm-sub" id="ausenteModalMensagem"></div>
+      <div class="ipm-btns">
+        <button class="ipm-btn-nao" onclick="fecharModalAusente()">← Cancelar</button>
+        <button class="ipm-btn-sim" id="ausenteBtnSim" onclick="confirmarAusente()" style="background:var(--red)"><span
+            class="material-symbols-rounded">person_off</span>
+          Sim, ausente</button>
       </div>
     </div>
   </div>

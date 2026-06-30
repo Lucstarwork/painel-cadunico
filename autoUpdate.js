@@ -1,9 +1,8 @@
 (function () {
   'use strict';
 
-  var GITHUB_REPO  = 'Lucstarwork/painel-cadunico';
-  var LS_KEY       = 'last_update_check';
-  var RELOAD_DELAY = 5000;
+  var GITHUB_REPO = 'Lucstarwork/painel-cadunico';
+  var LS_KEY      = 'last_update_check';
 
   function dataHoje() {
     var d = new Date();
@@ -24,19 +23,39 @@
 
   function exibirBanner() {
     if (document.getElementById('update-banner')) return;
-    var el = document.createElement('div');
-    el.id = 'update-banner';
-    el.setAttribute('style', [
+
+    var banner = document.createElement('div');
+    banner.id = 'update-banner';
+    banner.setAttribute('style', [
       'position:fixed', 'inset:0 0 auto 0',
       'background:#1a3a5c', 'color:#ffffff',
-      'padding:.85rem 2rem',
+      'padding:.75rem 2rem',
       'font-family:"IBM Plex Sans",system-ui,sans-serif',
       'font-size:.92rem', 'font-weight:600',
-      'letter-spacing:.04em', 'text-align:center',
+      'letter-spacing:.04em',
+      'display:flex', 'align-items:center', 'justify-content:center', 'gap:1.5rem',
       'z-index:99999', 'box-shadow:0 2px 12px rgba(0,0,0,.35)'
     ].join(';'));
-    el.textContent = 'É necessário realizar a instalação de uma atualização.';
-    document.body.prepend(el);
+
+    var texto = document.createElement('span');
+    texto.textContent = 'Uma nova versão está disponível. Aguarde o aviso de instalação.';
+
+    var btn = document.createElement('button');
+    btn.textContent = 'OK';
+    btn.setAttribute('style', [
+      'background:#ffffff', 'color:#1a3a5c',
+      'border:none', 'border-radius:4px',
+      'padding:.35rem 1.2rem',
+      'font-size:.88rem', 'font-weight:700',
+      'cursor:pointer', 'flex-shrink:0'
+    ].join(';'));
+    btn.addEventListener('click', function () {
+      banner.remove();
+    });
+
+    banner.appendChild(texto);
+    banner.appendChild(btn);
+    document.body.prepend(banner);
   }
 
   function normalizarTag(tag) {
@@ -92,10 +111,6 @@
       if (!versaoRemotaMaisRecente(tagRemota, versaoLocal)) return;
 
       exibirBanner();
-
-      setTimeout(function () {
-        window.location.reload(true);
-      }, RELOAD_DELAY);
 
     } catch (_) {
       // Falha silenciosa — a aplicação continua normalmente
